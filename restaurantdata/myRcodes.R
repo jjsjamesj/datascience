@@ -1,0 +1,1 @@
+for(i in 1:1327){if(xmlValue(rootNode[[1]][[i]][2]$zipcode)==21231){j<-j+1}}
