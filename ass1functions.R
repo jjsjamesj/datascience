@@ -21,44 +21,27 @@ pollutantmean <- function(directory, pollutant, id=1:332){
 }
 
 complete2 <- function(directory, id=1:332 ){
-  
-  list.files(directory, full.names=TRUE)[id]
-  
-  
-  
-  monitorobs<- 0
-  if(length(id)==1){
-    monitorobs <-0
-    data <- read.csv(filenames[id])
-    dimension <- dim(data)[1]
-    for(j in 1:dimension){
-      if(!is.na(data[['sulfate']][j]) && !is.na(data[['nitrate']][j])){
-        monitorobs <- (monitorobs+1)
-      }
-    }
-    
-    return(data.frame(id, monitorobs))
-  }
-  
-  
-  nobsarray <- 0
+  if(is.unsorted(id)){id <- sort(id)}
+  filenames <- list.files(directory, full.names=TRUE)[id]
+  ObsAtMonitorI<- 0
+  MonitorObsList <- 0
   k <- 1
-  for(i in id){
+  for(i in 1:length(id)){
     
-    data <- read.csv(filenames[i])
-    dimension <- dim(data)[1]
+    mydata <- read.csv(filenames[i])
+    dimension <- dim(mydata)[1]
     for(j in 1:dimension){
-      if(!is.na(data[['sulfate']][j]) && !is.na(data[['nitrate']][j])){
-        monitorobs <- (monitorobs+1)
+      if(!is.na(mydata[['sulfate']][j]) && !is.na(mydata[['nitrate']][j])){
+        ObsAtMonitorI <- (ObsAtMonitorI+1)
       }
     }
-    nobsarray[k] <- monitorobs
+    MonitorObsList[k] <- ObsAtMonitorI
     
     
     k <- (k+1)
   }
   
-  data.frame(id, nobsarray)
+  data.frame(id, MonitorObsList)
   
 }
 
